@@ -3,17 +3,16 @@
     <head>
         <title>MouseClicker</title>
         <script>
-            function redirect(url) {
-                location.replace(url);
+            const element = "title";
+
+            function change(id) {
+                document.getElementById(id).innerHTML = "I am the rizzler now"
             }
-
-            const website = "Mousegod555.github.io/game/index.html"
-
-            setInterval(redirect(website), 1000);
         </script>
     </head>
     <body>
         <center>
-            <p>Redirecting you to the Game Page...</p>
+            <h1 id="title">This is a title</h1>
+            <button onclick="change(element);">Change Title</button>
         </center>
     </body>
