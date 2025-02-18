@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script type="text/javascript">
-            window.cookieconsent_options = {"message":"This website uses cookies.","dismiss":"Got it!","learnMore":"Learn more","link":"http://Mousegod555.github.io/cookiespolicy","target":"_blank","theme":"http://orteil.dashnet.org/cookieconsent.css","domain":"dashnet.org"};
-        </script>
         <title>MouseClicker</title>
+        <script>
+            function redirect(url) {
+                location.replace(url);
+            }
+
+            const website = "Mousegod555.github.io/game/index.html"
+
+            setInterval(redirect(website), 1000);
+        </script>
     </head>
     <body>
         <center>
-            <h1>Mouse clicker</h1>
+            <p>Redirecting you to the Game Page...</p>
         </center>
     </body>
