@@ -10,21 +10,21 @@
         clicks = 0;
       } else {
         clicks = localStorage.getItem("clicks");
-        clicks = toString(clicks);
+        clicks = parseInt(clicks);
       }
 
       if(localStorage.getItem("vans") === null) {
         vans = 0;
       } else {
         vans = vans.getItem("vans");
-        vans = toString(vans);
+        vans = parseInt(vans);
       }
 
       if(localStorage.getItem("vansPrice") === null) {
         vansPrice = 10;
       else {
         vansPrice = localStorage.getItem("vansPrice");
-        vansPrice = toString(vans);
+        vansPrice = parseInt(vans);
       }
 
       setInterval(function () {localStorage.setItem("clicks", "" + clicks); localStorage.setItem("vans", "" + vans); localStorage.setItem("vansPrice", 
