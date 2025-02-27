@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
@@ -6,29 +7,9 @@
      
     </style>
     <script>
-      if(localStorage.getItem("clicks") === null) {
-        clicks = 0;
-      } else {
-        clicks = localStorage.getItem("clicks");
-        clicks = parseInt(clicks);
-      }
-
-      if(localStorage.getItem("vans") === null) {
-        vans = 0;
-      } else {
-        vans = vans.getItem("vans");
-        vans = parseInt(vans);
-      }
-
-      if(localStorage.getItem("vansPrice") === null) {
-        vansPrice = 10;
-      else {
-        vansPrice = localStorage.getItem("vansPrice");
-        vansPrice = parseInt(vans);
-      }
-
-      setInterval(function () {localStorage.setItem("clicks", "" + clicks); localStorage.setItem("vans", "" + vans); localStorage.setItem("vansPrice", 
-"" + vansPrice);}, 1000);
+      clicks = 0;
+      vans = 0;
+      vansPrice = 0;
 
       setInterval(function() {document.getElementById("alert").innerHTML = ''}, 5000);
       setInterval(function() {clicks += vans * 1; document.getElementById("clicks").innerHTML = 'Touches: ' + clicks}, 200);
