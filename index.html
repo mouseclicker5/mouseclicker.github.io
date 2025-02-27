@@ -24,7 +24,8 @@
         vansPrice = localStorage.getItem("vansPrice");
       }
 
-      setInterval(function () {localStorage.setItem("clicks", clicks); localStorage.setItem("vans", vans); localStorage.setItem("vansPrice", vansPrice);}, 1000);
+      setInterval(function () {localStorage.setItem("clicks", "" + clicks); localStorage.setItem("vans", "" + vans); localStorage.setItem("vansPrice", 
+"" + vansPrice);}, 1000);
 
       setInterval(function() {document.getElementById("alert").innerHTML = ''}, 5000);
       setInterval(function() {clicks += vans * 1; document.getElementById("clicks").innerHTML = 'Touches: ' + clicks}, 200);
