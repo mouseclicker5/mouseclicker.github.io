@@ -15,7 +15,7 @@
   </head>
   <body style="background-color:lightgreen; text-align: center;">
      <img src="https://static.vecteezy.com/system/resources/previews/043/613/267/non_2x/mouse-on-isolated-background-png.png" alt="Mouse Image" height=200 width=200 onclick="document.getElementById('alert').innerHTML = 'You touched minor the mouse! Hes a minor you pedophile!'; clicks += 1; document.getElementById('clicks').innerHTML = 'Touches: ' + clicks;">
-    <img src="https://static.vecteezy.com/system/resources/previews/019/390/724/non_2x/cargo-van-isolated-on-transparent-background-3d-rendering-illustration-free-png.png"height=150 width=150 title="Old man''s van. Produces 5 touches a second. Costs: 50 touches" onclick="if(clicks > 5) {vans += 1} else {alert('no');}">
+    <img src="https://static.vecteezy.com/system/resources/previews/019/390/724/non_2x/cargo-van-isolated-on-transparent-background-3d-rendering-illustration-free-png.png"height=150 width=150 title="Old man''s van. Produces 5 touches a second. Costs: 50 touches" onclick="if(clicks > 10) {vans += 1; clicks -= 5; document.getElementById('clicks').innerHTML = 'Touches: ' + clicks;} else {alert('No');}">
     <h1 style="font-family:Times New Roman;" style="color:gray;" id="title">Mouse Clicker</h1>
     <h3 style="font-family: Times New Roman; color:gray;" id="clicks">Touches: 0</h3>
     <h3 style="font-family: Times New Roman; color:gray;" id="alert"></h3>
