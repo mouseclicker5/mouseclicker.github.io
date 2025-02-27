@@ -6,9 +6,25 @@
      
     </style>
     <script>
-      clicks = 0;
-      vans = 0;
-      vansPrice = 10;
+      if(localStorage.getItem("clicks") === null) {
+        clicks = 0;
+      } else {
+        clicks = localStorage.getItem("clicks");
+      }
+
+      if(localStorage.getItem("vans") === null) {
+        vans = 0;
+      } else {
+        vans = vans.getItem("vans");
+      }
+
+      if(localStorage.getItem("vansPrice") === null) {
+        vansPrice = 10;
+      else {
+        vansPrice = localStorage.getItem("vansPrice");
+      }
+
+      setInterval(function () {localStorage.setItem("clicks", clicks); localStorage.setItem("vans", vans); localStorage.setItem("vansPrice", vansPrice);}, 1000);
 
       setInterval(function() {document.getElementById("alert").innerHTML = ''}, 5000);
       setInterval(function() {clicks += vans * 1; document.getElementById("clicks").innerHTML = 'Touches: ' + clicks}, 200);
