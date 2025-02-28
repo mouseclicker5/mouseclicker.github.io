@@ -7,19 +7,20 @@
     </style>
     <script>
       clicks = 0;
-      vans = 1;
+      vans = 0;
       vansPrice = 10;
-      
-      
+      touchesPerClick = 1
+      clickUpgradeCost = 10
 
       setInterval(function() {document.getElementById("alert").innerHTML = ''}, 5000);
       setInterval(function() {clicks += vans; document.getElementById("clicks").innerHTML = 'Clicks: ' + clicks}, 100);
     </script>
   </head>
   <body style="background-color:lightgreen; text-align: center;">
-    <img src="https://static.vecteezy.com/system/resources/previews/043/613/267/non_2x/mouse-on-isolated-background-png.png" alt="Mouse Image" height=200 width=200 onclick="clicks += 1; document.getElementById('clicks').innerHTML = 'Clicks: ' + clicks;">
+    <img src="https://static.vecteezy.com/system/resources/previews/043/613/267/non_2x/mouse-on-isolated-background-png.png" alt="Mouse Image" height=200 width=200 onclick="clicks += touchesPerClick; document.getElementById('clicks').innerHTML = 'Clicks: ' + clicks;">
     <img src="images/landonsmissingexoticnuts.png"height=150 width=150 title="Mousetrap" onclick= "if(clicks > vansPrice) {document.getElementById('vans').innerHTML = 'Mousetraps Owned: ' + vans; vansPrice = Math.round(vansPrice * 1.15); vans += 1; clicks -= vansPrice; document.getElementById('clicks').innerHTML = 'Clicks: ' + clicks; document.getElementById('price-vans').innerHTML = 'Mousetrap Price: $' + vansPrice;} else {alert('No');}">
     <img src="https://photos.peopleimages.com/picture/202306/2854633-png-studio-shot-of-an-elderly-man-getting-a-surprise-against-a-grey-background-zoom_90.jpg" height=200 width=200 title="OLd man. Produces 10 taps a second." onclick="">
+    <button onclick="if(clicks > 9) {touchesPerClick = Math.round(touchesPerClick * 1.15);} else {alert('No');}">Buy Click Upgrade ($10)</button>
     <h1 style="font-family:Times New Roman;" style="color:gray;" id="title">Mouse Clicker</h1>
     <h3 style="font-family: Times New Roman; color:gray;" id="clicks">Clicks: 0</h3>
     <h3 style="font-family: Times New Roman; color:gray;" id="alert"></h3>
