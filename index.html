@@ -13,12 +13,15 @@
       jacksPrice = 49;
       touchesPerClick = 1;
       clickUpgradeCost = 9;
+      cannon = 0;
+      cannonprice = 99;
 
       setInterval(function() {document.title = clicks + " clicks - Mouse Clicker"}, 50);
 
       setInterval(function() {document.getElementById("alert").innerHTML = ''}, 5000);
       setInterval(function() {clicks += vans; document.getElementById("clicks").innerHTML = 'Clicks: ' + clicks}, 100);
       setInterval(function() {clicks += jacks; document.getElementById("clicks").innerHTML = 'Clicks: ' + clicks}, 100);
+      setInterval(function() {clicks += cannon; document.getElementByID("clicks").innerHTML = 'Clicks: ' + clicks}, 100);
     </script>
   </head>
   <body style="background-color:lightgreen; text-align: center;">
@@ -46,7 +49,9 @@
         </tr>
         <tr>
           <td>
-            <img src="r5"
+            <img src="images/image_2025-03-06_081736644-removebg-preview.png"height=150 width=150 title="Mouse cannon: produces 100 taps a second" onclick= "if(clicks > cannonprice) {clicks -= cannonPrice; document.getElementById('cannon').innerHTML = 'Cannons Owned: ' + cannons; cannonprice = Math.round(cannonprice * 1.15); cannons += 1; document.getElementById('clicks').innerHTML = 'Clicks: ' + clicks; document.getElementById('price-cannon').innerHTML = 'Cannon Price: $' + cannonprice;} else {alert('No');}">
+            <h3 style="font-family: Times New Roman; color:gray;" id="cannon">Cannons: 0</h3>
+            <h3 style="font-family: Times New Roman; color:gray;" id="price-cannon">Cannon Price: $100</h3>
           </td>
         </tr>
       </table>
