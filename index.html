@@ -8,17 +8,17 @@
     <script>
       clicks = 0;
       vans = 0;
-      vansPrice = 10;
+      vansPrice = 9;
       jacks = 0;
-      jacksPrice = 50;
+      jacksPrice = 49;
       touchesPerClick = 1;
-      clickUpgradeCost = 10;
+      clickUpgradeCost = 9;
 
       setInterval(function() {document.title = clicks + " clicks - Mouse Clicker"}, 50);
 
       setInterval(function() {document.getElementById("alert").innerHTML = ''}, 5000);
       setInterval(function() {clicks += vans; document.getElementById("clicks").innerHTML = 'Clicks: ' + clicks}, 100);
-      setInterval(function() {clicks += jacks; document.getElementById("clicks").innerHTML = 'Clicks: ' + clicks}, 105);
+      setInterval(function() {clicks += jacks; document.getElementById("clicks").innerHTML = 'Clicks: ' + clicks}, 100);
     </script>
   </head>
   <body style="background-color:lightgreen; text-align: center;">
@@ -42,6 +42,11 @@
           <td style="border: 2px solid black;">
             <button onclick="if(clicks > clickUpgradeCost) {clicks -= clickUpgradeCost; clickUpgradeCost = Math.round(clickUpgradeCost * 1.15); document.getElementById('price-click').innerHTML = 'Click Upgrade Price: '+ clickUpgradeCost; touchesPerClick += 1; document.getElementById('clicks').innerHTML = 'Clicks' + clicks;} else {alert('No');}">Buy Click Upgrade</button>
             <h3 style="font-family: Times New Roman; color:gray;" id="price-click">Click Upgrade Price: $10</h3>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <img src="r5"
           </td>
         </tr>
       </table>
