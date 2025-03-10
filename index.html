@@ -60,7 +60,7 @@
       }
 
       function clickGoldenCookie() {
-        clicks += 100;
+        clicks += touchesPerClick * 30000;
         document.getElementById('clicks').innerHTML = 'Clicks: ' + clicks;
         document.getElementById('golden-cookie').style.display = 'none';
       }
