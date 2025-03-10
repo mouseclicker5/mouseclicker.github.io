@@ -3,60 +3,102 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-      
+      body {
+        background-color: lightgreen; 
+        text-align: center;
+      }
+      #golden-cookie {
+        width: 50px;
+        height: 50px;
+        background: gold;
+        border-radius: 50%;
+        box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.3);
+        position: absolute;
+        cursor: pointer;
+        display: none;
+        animation: float 3s ease-in-out infinite;
+      }
+      @keyframes float {
+        0%, 100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+      }
     </style>
     <script>
-      clicks = 0;
-      vans = 0;
-      vansPrice = 9;
-      jacks = 0;
-      jacksPrice = 49;
-      touchesPerClick = 1;
-      clickUpgradeCost = 9;
-      cannons = 0;
-      cannonprice = 99;
+      let clicks = 0;
+      let vans = 0;
+      let vansPrice = 9;
+      let jacks = 0;
+      let jacksPrice = 49;
+      let touchesPerClick = 1;
+      let clickUpgradeCost = 9;
+      let cannons = 0;
+      let cannonprice = 99;
 
       setInterval(function() {document.title = clicks + " clicks - Mouse Clicker"}, 50);
       setInterval(function() {clicks += vans; document.getElementById("clicks").innerHTML = 'Clicks: ' + clicks}, 100);
       setInterval(function() {clicks += jacks; document.getElementById("clicks").innerHTML = 'Clicks: ' + clicks}, 100);
       setInterval(function() {clicks += cannons; document.getElementById("clicks").innerHTML = 'Clicks: ' + clicks}, 100);
+
+      // Golden cookie functionality
+      function spawnGoldenCookie() {
+        const goldenCookie = document.getElementById('golden-cookie');
+        goldenCookie.style.display = 'block';
+        goldenCookie.style.left = Math.random() * (window.innerWidth - 50) + 'px';
+        goldenCookie.style.top = Math.random() * (window.innerHeight - 50) + 'px';
+        setTimeout(() => {
+          goldenCookie.style.display = 'none';
+          setTimeout(spawnGoldenCookie, Math.random() * 10000 + 5000);
+        }, 5000);
+      }
+
+      window.onload = function() {
+        setTimeout(spawnGoldenCookie, Math.random() * 10000 + 5000);
+      }
+
+      function clickGoldenCookie() {
+        clicks += 100;
+        document.getElementById('clicks').innerHTML = 'Clicks: ' + clicks;
+        document.getElementById('golden-cookie').style.display = 'none';
+      }
     </script>
   </head>
-  <body style="background-color:lightgreen; text-align: center;">
+  <body>
     <center>
-      <table sytle="border: 1px solid black;">
+      <table style="border: 1px solid black;">
         <tr>
           <td style="border: 2px solid black;">
             <img src="https://static.vecteezy.com/system/resources/previews/043/613/267/non_2x/mouse-on-isolated-background-png.png" alt="Mouse Image" height=200 width=200 onclick="clicks += touchesPerClick; document.getElementById('clicks').innerHTML = 'Clicks: ' + clicks;">
             <h3 style="font-family: Times New Roman; color:gray;" id="clicks">Clicks: 0</h3>
           </td>
           <td style="border: 2px solid black;">
-            <img src="images/landonsmissingexoticnuts.png"height=150 width=150 title="Mousetrap" onclick= "if(clicks > vansPrice) {clicks -= vansPrice; document.getElementById('vans').innerHTML = 'Mousetraps Owned: ' + vans; vansPrice = Math.round(vansPrice * 1.15); vans += 1; document.getElementById('clicks').innerHTML = 'Clicks: ' + clicks; document.getElementById('price-vans').innerHTML = 'Mousetrap Price: $' + vansPrice;} else {alert('No');}">
+            <img src="images/landonsmissingexoticnuts.png" height=150 width=150 title="Mousetrap" onclick="if(clicks > vansPrice) {clicks -= vansPrice; document.getElementById('vans').innerHTML = 'Mousetraps Owned: ' + vans; vansPrice = Math.round(vansPrice * 1.15); vans += 1; document.getElementById('clicks').innerHTML = 'Clicks: ' + clicks; document.getElementById('price-vans').innerHTML = 'Mousetrap Price: $' + vansPrice;} else {alert('No');}">
             <h3 style="font-family: Times New Roman; color:gray;" id="vans">Mousetraps Owned: 0</h3>
-            <h3 style="font-family: Times New Roman; color:gray;" id="price-vans">Mousetraps Price: $10</h3>
+            <h3 style="font-family: Times New Roman; color:gray;" id="price-vans">Mousetrap Price: $10</h3>
           </td>
           <td style="border: 2px solid black;">
-            <img src="images/IMG_0410.jpg" height=200 width=150 title="Jack. Produces 25 taps a second." onclick= "if(clicks > jacksPrice) {clicks -= jacksPrice; document.getElementById('jacks').innerHTML = 'Jacks Owned: ' + jacks; jacksPrice = Math.round(jacksPrice * 1.30); jacks += 1; document.getElementById('clicks').innerHTML = 'Clicks: ' + clicks; document.getElementById('price-jacks').innerHTML = 'Jack Price: $' + jacksPrice;} else {alert('No communism for you');}"> 
+            <img src="images/IMG_0410.jpg" height=200 width=150 title="Jack. Produces 25 taps a second." onclick="if(clicks > jacksPrice) {clicks -= jacksPrice; document.getElementById('jacks').innerHTML = 'Jacks Owned: ' + jacks; jacksPrice = Math.round(jacksPrice * 1.30); jacks += 1; document.getElementById('clicks').innerHTML = 'Clicks: ' + clicks; document.getElementById('price-jacks').innerHTML = 'Jack Price: $' + jacksPrice;} else {alert('No communism for you');}">
             <h3 style="font-family: Times New Roman; color:gray;" id="jacks">Jacks: 0</h3>
             <h3 style="font-family: Times New Roman; color:gray;" id="price-jacks">Jacks Price: $50</h3>
           </td>
           <td style="border: 2px solid black;">
-            <button onclick="if(clicks > clickUpgradeCost) {clicks -= clickUpgradeCost; clickUpgradeCost = Math.round(clickUpgradeCost * 1.15); document.getElementById('price-click').innerHTML = 'Click Upgrade Price: '+ clickUpgradeCost; touchesPerClick += 1; document.getElementById('clicks').innerHTML = 'Clicks' + clicks;} else {alert('No');}">Buy Click Upgrade</button>
+            <button onclick="if(clicks > clickUpgradeCost) {clicks -= clickUpgradeCost; clickUpgradeCost = Math.round(clickUpgradeCost * 1.15); document.getElementById('price-click').innerHTML = 'Click Upgrade Price: ' + clickUpgradeCost; touchesPerClick += 1; document.getElementById('clicks').innerHTML = 'Clicks: ' + clicks;} else {alert('No');}">Buy Click Upgrade</button>
             <h3 style="font-family: Times New Roman; color:gray;" id="price-click">Click Upgrade Price: $10</h3>
           </td>
         </tr>
         <tr>
           <td style="border: 2px solid black;">
-            <img src="images/image_2025-03-06_081736644-removebg-preview.png"height=150 width=150 title="Mouse cannon: produces 100 taps a second" onclick= "if(clicks > cannonprice) {clicks -= cannonprice; document.getElementById('cannons').innerHTML = 'Cannons Owned: ' + cannons; cannonprice = Math.round(cannonprice * 1.15); cannons += 1; document.getElementById('clicks').innerHTML = 'Clicks: ' + clicks; document.getElementById('price-cannons').innerHTML = 'Cannon Price: $' + cannonprice;} else {alert('No');}">
+            <img src="images/image_2025-03-06_081736644-removebg-preview.png" height=150 width=150 title="Mouse cannon: produces 100 taps a second" onclick="if(clicks > cannonprice) {clicks -= cannonprice; document.getElementById('cannons').innerHTML = 'Cannons Owned: ' + cannons; cannonprice = Math.round(cannonprice * 1.15); cannons += 1; document.getElementById('clicks').innerHTML = 'Clicks: ' + clicks; document.getElementById('price-cannons').innerHTML = 'Cannon Price: $' + cannonprice;} else {alert('No');}">
             <h3 style="font-family: Times New Roman; color:gray;" id="cannons">Cannons: 0</h3>
             <h3 style="font-family: Times New Roman; color:gray;" id="price-cannons">Cannon Price: $100</h3>
           </td>
         </tr>
       </table>
     </center>
-    <h1 style="font-family:Times New Roman;" style="color:gray;" id="title">Mouse Clicker</h1>
+    <h1 style="font-family:Times New Roman; color:gray;" id="title">Mouse Clicker</h1>
     <h3 style="font-family: Times New Roman;"><a href="https://forms.gle/gDjLtyaKG4UE3Ppa6">Rate my Game (drag link to your tabs bar)</a></h3>
-
-  </body>
-</html>
+    <div id="golden-cookie" onclick="clickGoldenCookie()"></div>
 
