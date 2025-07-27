@@ -1,128 +1,204 @@
 <!DOCTYPE html>
-<html lang="en-US">
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-      body {
-        background-color: lightgreen;
-        text-align: center;
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mouse Clicker</title>
+  <style>
+    body {
+      background: #fef5e7;
+      font-family: 'Comic Sans MS', cursive;
+      text-align: center;
+      padding: 20px;
+      color: #333;
+    }
+    h1 {
+      font-size: 3em;
+    }
+    #cheese-counter {
+      font-size: 2em;
+      margin: 20px;
+    }
+    #mouse {
+      width: 150px;
+      cursor: pointer;
+    }
+    .shop-item, .upgrade-item {
+      border: 2px solid #ccc;
+      padding: 10px;
+      margin: 10px auto;
+      width: 300px;
+      background: #fff8dc;
+      cursor: pointer;
+    }
+    .shop-item:hover, .upgrade-item:hover {
+      background: #ffefb3;
+    }
+    .section-title {
+      font-size: 1.5em;
+      margin-top: 30px;
+    }
+    button {
+      margin: 10px;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🐭 Mouse Clicker</h1>
+  <p id="cheese-counter">🧀 Cheese: 0</p>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/3/32/House_mouse.jpg" id="mouse" alt="Mouse">
+
+  <div class="section-title">🏠 Buildings</div>
+  <div class="shop-item" onclick="buyBuilding('mouseHole')">
+    Mouse Hole 🐭<br>
+    Owned: <span id="count-mouseHole">0</span><br>
+    Cost: <span id="cost-mouseHole">10</span> cheese<br>
+    +1 cheese/sec
+  </div>
+  <div class="shop-item" onclick="buyBuilding('cheeseFactory')">
+    Cheese Factory 🧀🏭<br>
+    Owned: <span id="count-cheeseFactory">0</span><br>
+    Cost: <span id="cost-cheeseFactory">100</span> cheese<br>
+    +10 cheese/sec
+  </div>
+
+  <div class="section-title">🔧 Upgrades</div>
+  <div class="upgrade-item" onclick="buyUpgrade('doubleClick')">
+    Double Click 🐾<br>
+    Cost: <span id="cost-doubleClick">50</span><br>
+    Double your click power
+  </div>
+  <div class="upgrade-item" onclick="buyUpgrade('fasterMice')">
+    Faster Mice 🚀🐭<br>
+    Cost: <span id="cost-fasterMice">200</span><br>
+    Buildings produce twice as fast
+  </div>
+
+  <div class="section-title">💾 Save & Load</div>
+  <button onclick="saveGame()">Save Game</button>
+  <button onclick="loadGame()">Load Game</button>
+  <button onclick="resetGame()">Reset Game</button>
+
+  <script>
+    let cheese = 0;
+    let clickPower = 1;
+    let buildingMultiplier = 1;
+
+    const buildings = {
+      mouseHole: {
+        cost: 10,
+        count: 0,
+        rate: 1
+      },
+      cheeseFactory: {
+        cost: 100,
+        count: 0,
+        rate: 10
       }
-      #golden-cookie {
-        width: 50px;
-        height: 50px;
-        background-image: url('https://www.pngmart.com/files/22/Mice-PNG-File.png');
-        height: 50px; 
-        width: 50px;
-        background-size: cover;
-        position: absolute;
-        cursor: pointer;
-        display: none;
-        animation: float 5s ease-in-out infinite;
+    };
+
+    const upgrades = {
+      doubleClick: {
+        cost: 50,
+        purchased: false,
+        effect: () => { clickPower *= 2; }
+      },
+      fasterMice: {
+        cost: 200,
+        purchased: false,
+        effect: () => { buildingMultiplier *= 2; }
       }
-      @keyframes float {
-        0%, 100% {
-          transform: translateY(0);
+    };
+
+    document.getElementById("mouse").addEventListener("click", () => {
+      cheese += clickPower;
+      updateDisplay();
+    });
+
+    function buyBuilding(type) {
+      let b = buildings[type];
+      if (cheese >= b.cost) {
+        cheese -= b.cost;
+        b.count++;
+        b.cost = Math.floor(b.cost * 1.25);
+        updateDisplay();
+      }
+    }
+
+    function buyUpgrade(type) {
+      let u = upgrades[type];
+      if (!u.purchased && cheese >= u.cost) {
+        cheese -= u.cost;
+        u.purchased = true;
+        u.effect();
+        updateDisplay();
+      }
+    }
+
+    function generateCheese() {
+      for (let type in buildings) {
+        cheese += buildings[type].count * buildings[type].rate * buildingMultiplier / 10;
+      }
+      updateDisplay();
+    }
+
+    function updateDisplay() {
+      document.getElementById("cheese-counter").innerText = `🧀 Cheese: ${Math.floor(cheese)}`;
+      for (let b in buildings) {
+        document.getElementById("count-" + b).innerText = buildings[b].count;
+        document.getElementById("cost-" + b).innerText = buildings[b].cost;
+      }
+      for (let u in upgrades) {
+        if (upgrades[u].purchased) {
+          document.querySelector(`#cost-${u}`).innerText = "✔️ Purchased";
+        } else {
+          document.querySelector(`#cost-${u}`).innerText = upgrades[u].cost;
         }
-        50% {
-          transform: translateY(-20px);
+      }
+    }
+
+    function saveGame() {
+      const saveData = {
+        cheese,
+        clickPower,
+        buildingMultiplier,
+        buildings,
+        upgrades
+      };
+      localStorage.setItem('mouseClickerSave', JSON.stringify(saveData));
+      alert("Game saved!");
+    }
+
+    function loadGame() {
+      const data = localStorage.getItem('mouseClickerSave');
+      if (data) {
+        const save = JSON.parse(data);
+        cheese = save.cheese || 0;
+        clickPower = save.clickPower || 1;
+        buildingMultiplier = save.buildingMultiplier || 1;
+        Object.assign(buildings, save.buildings);
+        Object.assign(upgrades, save.upgrades);
+        for (let key in upgrades) {
+          if (upgrades[key].purchased) upgrades[key].effect(); // Reapply effects
         }
+        updateDisplay();
+        alert("Game loaded!");
+      } else {
+        alert("No save found.");
       }
-    </style>
-    <script>
-      let clicks = localStorage.getItem('clicks') ? parseInt(localStorage.getItem('clicks')) : 0;
-      let vans = localStorage.getItem('vans') ? parseInt(localStorage.getItem('vans')) : 0;
-      let vansPrice = localStorage.getItem('vansPrice') ? parseInt(localStorage.getItem('vansPrice')) : 9;
-      let jacks = localStorage.getItem('jacks') ? parseInt(localStorage.getItem('jacks')) : 0;
-      let jacksPrice = localStorage.getItem('jacksPrice') ? parseInt(localStorage.getItem('jacksPrice')) : 49;
-      let touchesPerClick = localStorage.getItem('touchesPerClick') ? parseInt(localStorage.getItem('touchesPerClick')) : 1;
-      let clickUpgradeCost = localStorage.getItem('clickUpgradeCost') ? parseInt(localStorage.getItem('clickUpgradeCost')) : 9;
-      let cannons = localStorage.getItem('cannons') ? parseInt(localStorage.getItem('cannons')) : 0;
-      let cannonprice = localStorage.getItem('cannonprice') ? parseInt(localStorage.getItem('cannonprice')) : 99;
+    }
 
-      function saveGame() {
-        localStorage.setItem('clicks', clicks);
-        localStorage.setItem('vans', vans);
-        localStorage.setItem('vansPrice', vansPrice);
-        localStorage.setItem('jacks', jacks);
-        localStorage.setItem('jacksPrice', jacksPrice);
-        localStorage.setItem('touchesPerClick', touchesPerClick);
-        localStorage.setItem('clickUpgradeCost', clickUpgradeCost);
-        localStorage.setItem('cannons', cannons);
-        localStorage.setItem('cannonprice', cannonprice);
+    function resetGame() {
+      if (confirm("Are you sure you want to reset everything?")) {
+        localStorage.removeItem('mouseClickerSave');
+        location.reload();
       }
+    }
 
-      setInterval(function() {
-        document.title = clicks + " clicks - Mouse Clicker";
-        saveGame();
-      }, 50);
-      setInterval(function() {clicks += vans; document.getElementById("clicks").innerHTML = 'Clicks: ' + clicks}, 100);
-      setInterval(function() {clicks += jacks; document.getElementById("clicks").innerHTML = 'Clicks: ' + clicks}, 100);
-      setInterval(function() {clicks += cannons; document.getElementById("clicks").innerHTML = 'Clicks: ' + clicks}, 100);
+    setInterval(generateCheese, 100);
+    updateDisplay();
+  </script>
 
-      // Golden cookie functionality
-      function spawnGoldenCookie() {
-        const goldenCookie = document.getElementById('golden-cookie');
-        goldenCookie.style.display = 'block';
-        goldenCookie.style.left = Math.random() * (window.innerWidth - 50) + 'px';
-        goldenCookie.style.top = Math.random() * (window.innerHeight - 50) + 'px';
-        setTimeout(() => {
-          goldenCookie.style.display = 'none';
-          setTimeout(spawnGoldenCookie, Math.random() * 10000 + 5000);
-        }, 5000);
-      }
-
-      window.onload = function() {
-        document.getElementById('clicks').innerHTML = 'Clicks: ' + clicks;
-        document.getElementById('vans').innerHTML = 'Mousetraps Owned: ' + vans;
-        document.getElementById('price-vans').innerHTML = 'Mousetrap Price: $' + vansPrice;
-        document.getElementById('jacks').innerHTML = 'Jacks Owned: ' + jacks;
-        document.getElementById('price-jacks').innerHTML = 'Jacks Price: $' + jacksPrice;
-        document.getElementById('price-click').innerHTML = 'Click Upgrade Price: $' + clickUpgradeCost;
-        document.getElementById('cannons').innerHTML = 'Cannons Owned: ' + cannons;
-        document.getElementById('price-cannons').innerHTML = 'Cannon Price: $' + cannonprice;
-        setTimeout(spawnGoldenCookie, Math.random() * 10000 + 5000);
-      }
-
-      function clickGoldenCookie() {
-        clicks += touchesPerClick * 3000;
-        document.getElementById('clicks').innerHTML = 'Clicks: ' + clicks;
-        document.getElementById('golden-cookie').style.display = 'none';
-      }
-    </script>
-  </head>
-  <body>
-    <center>
-      <table style="border: 1px solid black;">
-        <tr>
-          <td style="border: 2px solid black;">
-            <img src="https://static.vecteezy.com/system/resources/previews/043/613/267/non_2x/mouse-on-isolated-background-png.png" alt="Mouse Image" height=200 width=200 onclick="clicks += touchesPerClick; document.getElementById('clicks').innerHTML = 'Clicks: ' + clicks;">
-            <h3 style="font-family: Times New Roman; color:gray;" id="clicks">Clicks: 0</h3>
-          </td>
-          <td style="border: 2px solid black;">
-            <img src="images/landonsmissingexoticnuts.png" height=150 width=150 title="Mousetrap" onclick="if(clicks > vansPrice) {clicks -= vansPrice; vans += 1; vansPrice = Math.round(vansPrice * 1.15); document.getElementById('vans').innerHTML = 'Mousetraps Owned: ' + vans; document.getElementById('clicks').innerHTML = 'Clicks: ' + clicks; document.getElementById('price-vans').innerHTML = 'Mousetrap Price: $' + vansPrice; saveGame();} else {alert('No');}">
-            <h3 style="font-family: Times New Roman; color:gray;" id="vans">Mousetraps Owned: 0</h3>
-            <h3 style="font-family: Times New Roman; color:gray;" id="price-vans">Mousetrap Price: $10</h3>
-          </td>
-          <td style="border: 2px solid black;">
-            <img src="images/IMG_0410.jpg" height=200 width=150 title="Jack. Produces 25 taps a second." onclick="if(clicks > jacksPrice) {clicks -= jacksPrice; jacks += 1; jacksPrice = Math.round(jacksPrice * 1.30); document.getElementById('jacks').innerHTML = 'Jacks Owned: ' + jacks; document.getElementById('clicks').innerHTML = 'Clicks: ' + clicks; document.getElementById('price-jacks').innerHTML = 'Jack Price: $' + jacksPrice; saveGame();} else {alert('No');}">
-            <h3 style="font-family: Times New Roman; color:gray;" id="jacks">Jacks Owned: 0</h3>
-            <h3 style="font-family: Times New Roman; color:gray;" id="price-jacks">Jacks Price: $50</h3>
-          </td>
-          <td style="border: 2px solid black;">
-            <button onclick="if(clicks > clickUpgradeCost) {clicks -= clickUpgradeCost; clickUpgradeCost = Math.round(clickUpgradeCost * 1.15); touchesPerClick += 1; document.getElementById('price-click').innerHTML = 'Click Upgrade Price: ' + clickUpgradeCost; document.getElementById('clicks').innerHTML = 'Clicks: ' + clicks; saveGame();} else {alert('No');}">Buy Click Upgrade</button>
-            <h3 style="font-family: Times New Roman; color:gray;" id="price-click">Click Upgrade Price: $10</h3>
-          </td>
-        </tr>
-        <tr>
-          <td style="border: 2px solid black;">
-            <img src="images/image_2025-03-06_081736644-removebg-preview.png" height=150 width=150 title="Mouse cannon: produces 100 taps a second" onclick="if(clicks > cannonprice) {clicks -= cannonprice; document.getElementById('cannons').innerHTML = 'Cannons Owned: ' + cannons; cannonprice = Math.round(cannonprice * 1.15); cannons += 1; document.getElementById('clicks').innerHTML = 'Clicks: ' + clicks; document.getElementById('price-cannons').innerHTML = 'Cannon Price: $' + cannonprice;} else {alert('No');}">
-             <h3 style="font-family: Times New Roman; color:gray;" id="cannons">Cannons: 0</h3>
-             <h3 style="font-family: Times New Roman; color:gray;" id="price-cannons">Cannon Price: $100</h3>
-           </td>
-         </tr>
-       </table>
-     </center>
-    <h1 style="font-family:Times New Roman; color:gray;" id="title">Mouse Clicker</h1>
-    <h3 style="font-family: Times New Roman;"><a href="https://forms.gle/gDjLtyaKG4UE3Ppa6">Rate my Game (drag link to your tabs bar)</a></h3>
-    <div id="golden-cookie" onclick="clickGoldenCookie()"></div>
-
+</body>
+</html>
